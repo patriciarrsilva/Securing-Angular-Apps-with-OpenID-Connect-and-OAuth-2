@@ -4,6 +4,7 @@ import {
   UserManager,
   UserManagerSettings
 } from 'oidc-client';
+import { Subject } from 'rxjs';
 import { Constants } from '../constants';
 import { CoreModule } from './core.module';
 
@@ -11,6 +12,9 @@ import { CoreModule } from './core.module';
 export class AuthService {
   private _userManager: UserManager;
   private _user: User;
+  private _loginChangedSubject = new Subject<boolean>();
+
+  loginChanged = this._loginChangedSubject.asObservable();
 
   constructor() {
     const stsSettings: UserManagerSettings = {
@@ -23,5 +27,23 @@ export class AuthService {
     };
 
     this._userManager = new UserManager(stsSettings);
+  }
+
+  login(): Promise<void> {
+    return this._userManager.signinRedirect();
+  }
+
+  async isLoggedIn(): Promise<boolean> {
+    const user = await this._userManager.getUser();
+
+    const isLoggedIn = !!user && !user.expired;
+
+    if (this._user !== user) {
+      this._loginChangedSubject.next(isLoggedIn);
+    }
+
+    this._user = user;
+
+    return isLoggedIn;
   }
 }
