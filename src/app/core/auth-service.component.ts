@@ -46,4 +46,17 @@ export class AuthService {
 
     return isLoggedIn;
   }
+
+  async completeLogin(): Promise<User> {
+    const user =
+      await this._userManager.signinRedirectCallback();
+
+    this._user = user;
+
+    this._loginChangedSubject.next(
+      !!user && !user.expired
+    );
+
+    return user;
+  }
 }
