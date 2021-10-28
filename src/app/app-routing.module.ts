@@ -6,6 +6,7 @@ import { ProjectListComponent } from './projects/project-list.component';
 import { ProjectComponent } from './projects/project.component';
 import { ContactUsComponent } from './home/contact-us.component';
 import { SigninRedirectCallbackComponent } from './home/signin-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callback.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'signin-callback',
     component: SigninRedirectCallbackComponent
+  },
+  {
+    path: 'signout-callback',
+    component: SignoutRedirectCallbackComponent
   }
 ];
 

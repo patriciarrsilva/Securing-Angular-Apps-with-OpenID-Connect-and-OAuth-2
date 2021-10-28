@@ -15,13 +15,17 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._authService.isLoggedIn().then(loggedIn => {
       this.isLoggedIn = loggedIn;
     });
   }
 
-  login() {
+  login(): void {
     this._authService.login();
+  }
+
+  logout(): void {
+    this._authService.logout();
   }
 }

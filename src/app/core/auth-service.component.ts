@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  SignoutResponse,
   User,
   UserManager,
   UserManagerSettings
@@ -58,5 +59,15 @@ export class AuthService {
     );
 
     return user;
+  }
+
+  logout(): void {
+    this._userManager.signoutRedirect();
+  }
+
+  completeLogout(): Promise<SignoutResponse> {
+    this._user = null;
+
+    return this._userManager.signoutRedirectCallback();
   }
 }
