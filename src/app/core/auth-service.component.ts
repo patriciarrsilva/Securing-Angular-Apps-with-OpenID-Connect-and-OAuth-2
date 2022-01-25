@@ -7,9 +7,8 @@ import {
 } from 'oidc-client';
 import { Subject } from 'rxjs';
 import { Constants } from '../constants';
-import { CoreModule } from './core.module';
 
-@Injectable({ providedIn: CoreModule })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private _userManager: UserManager;
   private _user: User;
@@ -78,5 +77,15 @@ export class AuthService {
     this._user = null;
 
     return this._userManager.signoutRedirectCallback();
+  }
+
+  async getAccessToken(): Promise<string> {
+    const user = await this._userManager.getUser();
+
+    if (!!user && !user.expired) {
+      return user.access_token;
+    } else {
+      return null;
+    }
   }
 }
